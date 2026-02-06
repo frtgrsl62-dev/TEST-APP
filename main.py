@@ -531,21 +531,15 @@ def soru_goster_page():
     st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")
 
     # 🖼️ 1. ADIM: Soru Resmini Göster
-    resim_yolu = soru.get("soru_resmi") or soru.get("resim")
-    
-    if resim_yolu:
-        from image_handler import image_handler
-        # HATA DÜZELTİLDİ: width=None yerine use_container_width=True mantığına geçildi
-        try:
-            # image_handler içindeki display_image fonksiyonunu doğrudan kullanmak yerine 
-            # bazen st.image ile sarmalamak daha güvenlidir
-            image_handler.display_image(
-                resim_yolu, 
-                caption="🖼️ Soru Görseli"
-                # Buradaki width parametresi image_handler.py içinde st.image'a gidiyor
-            )
-        except Exception as e:
-            st.error(f"Görsel yüklenirken bir hata oluştu: {e}")
+        resim_yolu = soru.get("soru_resmi") or soru.get("resim")
+        
+        if resim_yolu:
+            if os.path.exists(resim_yolu):
+                st.image(resim_yolu, caption="🖼️ Soru Görseli", use_container_width=True)
+            elif resim_yolu.startswith("http"):
+                st.image(resim_yolu, caption="🖼️ Soru Görseli", use_container_width=True)
+            else:
+                st.warning("⚠️ Resim dosyası bulunamadı.")
 
     # ===== Soru metni =====
     st.markdown(soru["soru"])
@@ -1087,6 +1081,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
