@@ -536,7 +536,7 @@ def soru_goster_page():
         try:
             image_handler.display_image(
                 resim_yolu,
-                caption="🖼️ Soru Görseli"
+       #         caption="🖼️ Soru Görseli"
             )
         except Exception as e:
             st.warning("❌ Resim görüntülenemedi.")
@@ -1111,5 +1111,6 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
