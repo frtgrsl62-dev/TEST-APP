@@ -531,18 +531,18 @@ def soru_goster_page():
     st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")
 
     # 🖼️ RESİM GÖSTERİMİ (Hizalamaya Dikkat!)
-    resim_yolu = soru.get("soru_resmi") or soru.get("resim")
-    
-    if resim_yolu:
-        from image_handler import image_handler
-        try:
-            # use_container_width=True hatasız çalışması için en güvenli yoldur
-            image_handler.display_image(
-                resim_yolu, 
-                caption="🖼️ Soru Görseli"
-            )
-        except Exception as e:
-            st.warning("Görsel yüklenemedi, ancak soru metni aşağıdadır.")
+resim_yolu = soru.get("soru_resmi") or soru.get("resim")
+
+# ❗️GEÇERSİZ RESİM DEĞERLERİNİ ELE
+if resim_yolu and resim_yolu not in ["Yok", "", None]:
+    try:
+        image_handler.display_image(
+            resim_yolu,
+            caption="🖼️ Soru Görseli",
+            width="content"   # 🔥 EN GÜVENLİ SEÇİM
+        )
+    except Exception:
+        st.warning("❌ Resim görüntülenemedi.")
 
     # ===== Soru metni =====
     st.markdown(soru["soru"])
@@ -1114,3 +1114,4 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
