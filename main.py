@@ -1039,9 +1039,3 @@ elif page == "admin":
 
 
 
-
-
-
-
-
-
