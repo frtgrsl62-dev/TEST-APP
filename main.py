@@ -518,40 +518,43 @@ def soru_goster_page():
             st.rerun()
         return
 
-# ===== Soruyu Göster =====
-soru = secilen_test[index]
+    # ===== Soruyu Göster =====
+    soru = secilen_test[index]
 
-# DEBUG (isteğe bağlı)
-st.write("DEBUG RESİM:", soru.get("resim"))
+    # DEBUG
+    st.write("DEBUG RESİM:", soru.get("resim"))
 
-st.markdown(
-    f"<h2 style='font-size:20px;'>{secilen_ders} - {secilen_konu}</h2>",
-    unsafe_allow_html=True
-)
-st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")
+    st.markdown(
+        f"<h2 style='font-size:20px;'>{secilen_ders} - {secilen_konu}</h2>",
+        unsafe_allow_html=True
+    )
+    st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")
 
-# ===== Soruya ait resim varsa göster =====
-import os
-if "resim" in soru and soru["resim"]:
-    if os.path.exists(soru["resim"]):
-        st.image(
-            soru["resim"],
-            use_container_width=True,
-            caption="🖼️ Soruya Ait Görsel"
-        )
-    else:
-        st.warning(f"⚠️ Görsel bulunamadı: {soru['resim']}")
+    # ===== Soruya ait resim varsa göster =====
+    import os
+    if soru.get("resim"):
+        if os.path.exists(soru["resim"]):
+            st.image(
+                soru["resim"],
+                use_container_width=True,
+                caption="🖼️ Soruya Ait Görsel"
+            )
+        else:
+            st.warning(f"⚠️ Görsel bulunamadı: {soru['resim']}")
 
-st.markdown(soru["soru"])
+    # ===== Soru metni =====
+    st.markdown(soru["soru"])
 
-
-    # Eğer maddeler varsa liste halinde göster
+    # ===== Maddeler =====
     if "maddeler" in soru:
         for madde in soru["maddeler"]:
-            # st.markdown(f"- {madde}")
-             st.markdown(f"<div style='margin:2px 0'>{madde}</div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div style='margin:2px 0'>{madde}</div>",
+                unsafe_allow_html=True
+            )
 
-    secenekler = [f"{harf}) {metin}" for harf, metin in soru["secenekler"].items()]
+    # ===== Şıklar =====
+    secenekler = [f"{h}) {m}" for h, m in soru["secenekler"].items()]
     cevap_key = f"cevap_{index}"
 
     # Radyo butonu
@@ -1077,6 +1080,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
