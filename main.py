@@ -945,32 +945,33 @@ def admin_page():
                 time.sleep(1)
                 st.rerun()
     
-# TAB 5 - İstatistikler
-with tab5:
-    st.subheader("📊 Soru Bankası İstatistikleri")
+    # TAB 5 - İstatistikler
+    with tab5:
+        st.subheader("📊 Soru Bankası İstatistikleri")
 
-    toplam_soru = sum(
-        len(sorular)
-        for ders_konular in soru_bankasi.values()
-        for sorular in ders_konular.values()
-    )
+        toplam_soru = sum(
+            len(sorular)
+            for ders_konular in soru_bankasi.values()
+            for sorular in ders_konular.values()
+        )
 
-    toplam_ders = len(soru_bankasi)
-    toplam_konu = sum(len(konular) for konular in soru_bankasi.values())
+        toplam_ders = len(soru_bankasi)
+        toplam_konu = sum(len(konular) for konular in soru_bankasi.values())
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.info(f"📚 **Toplam Ders:** {toplam_ders}")
-    with col2:
-        st.warning(f"📖 **Toplam Konu:** {toplam_konu}")
-    with col3:
-        st.success(f"📝 **Toplam Soru:** {toplam_soru}")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.info(f"📚 **Toplam Ders:** {toplam_ders}")
+        with col2:
+            st.warning(f"📖 **Toplam Konu:** {toplam_konu}")
+        with col3:
+            st.success(f"📝 **Toplam Soru:** {toplam_soru}")
 
-    st.markdown("### Ders Bazında Soru Sayıları")
+        st.markdown("### Ders Bazında Soru Sayıları")
 
-    for ders, konular in soru_bankasi.items():
-        soru_sayisi = sum(len(s) for s in konular.values())
-        st.write(f"- **{ders}** → {soru_sayisi} soru")
+        for ders, konular in soru_bankasi.items():
+            soru_sayisi = sum(len(s) for s in konular.values())
+            st.write(f"- **{ders}** → {soru_sayisi} soru")
+
 
 
 
@@ -1036,6 +1037,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
