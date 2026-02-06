@@ -519,6 +519,9 @@ def soru_goster_page():
         return
 
     # ===== Soruyu Göster =====
+    st.write("DEBUG RESİM:", soru.get("resim"))
+
+    
     soru = secilen_test[index]
     st.markdown(f"<h2 style='font-size:20px;'>{secilen_ders} - {secilen_konu}</h2>", unsafe_allow_html=True)
     st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")   
@@ -1068,6 +1071,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
