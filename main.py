@@ -518,26 +518,32 @@ def soru_goster_page():
             st.rerun()
         return
 
-    # ===== Soruyu Göster =====
-    st.write("DEBUG RESİM:", soru.get("resim"))
+# ===== Soruyu Göster =====
+soru = secilen_test[index]
 
-    
-    soru = secilen_test[index]
-    st.markdown(f"<h2 style='font-size:20px;'>{secilen_ders} - {secilen_konu}</h2>", unsafe_allow_html=True)
-    st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")   
+# DEBUG (isteğe bağlı)
+st.write("DEBUG RESİM:", soru.get("resim"))
 
-    # ===== Soruya ait resim varsa göster =====
-    if soru.get("resim"):
-        try:
-            st.image(
-                soru["resim"],
-                use_container_width=True,
-                caption="🖼️ Soruya Ait Görsel"
-            )
-        except Exception:
-            st.warning("⚠️ Soru görseli yüklenemedi.")
+st.markdown(
+    f"<h2 style='font-size:20px;'>{secilen_ders} - {secilen_konu}</h2>",
+    unsafe_allow_html=True
+)
+st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")
 
-    st.markdown(f"{soru['soru']}")
+# ===== Soruya ait resim varsa göster =====
+import os
+if "resim" in soru and soru["resim"]:
+    if os.path.exists(soru["resim"]):
+        st.image(
+            soru["resim"],
+            use_container_width=True,
+            caption="🖼️ Soruya Ait Görsel"
+        )
+    else:
+        st.warning(f"⚠️ Görsel bulunamadı: {soru['resim']}")
+
+st.markdown(soru["soru"])
+
 
     # Eğer maddeler varsa liste halinde göster
     if "maddeler" in soru:
@@ -1071,6 +1077,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
