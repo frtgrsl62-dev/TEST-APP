@@ -10,9 +10,7 @@ from ders_konu_notlari import ders_konu_notlari
 from deneme_sinavlari import deneme_sinavlari
 
 
-
 import uuid
-
 
 # ===============================
 # SORU BANKASI (GLOBAL)
@@ -29,7 +27,6 @@ cookies = EncryptedCookieManager(
 
 if not cookies.ready():
     st.stop()
-
 
 # ===============================
 # Dosya yolları
@@ -224,7 +221,6 @@ def ders_secim_page():
     st.markdown("---")
     st.markdown("<p style='text-align: center; color: orange; font-size:15px;'>KPSS SORU ÇÖZÜM PLATFORMU</p>", unsafe_allow_html=True)
 
-
 # ===============================
 # Konu Seçim Sayfası (Dairesel yüzde gösterimi)
 # ===============================
@@ -298,7 +294,6 @@ def konu_secim_page(ders):
 
     st.markdown("---")
     st.markdown("<h1 style='text-align: center; color: orange; font-size:15px;'>KPSS SORU ÇÖZÜM PLATFORMU</h1>", unsafe_allow_html=True)
-
 
 
 # ===============================
@@ -437,7 +432,6 @@ def deneme_secim_page():
         "<h1 style='text-align:center; color:orange; font-size:15px;'>KPSS SORU ÇÖZÜM PLATFORMU</h1>",
         unsafe_allow_html=True
     )
-
 
 # ===============================
 # Soru Gösterim Sayfası (Radyo başta seçili gelmez)
@@ -597,7 +591,6 @@ def soru_goster_page():
     st.markdown("<h1 style='text-align: center; color: orange; font-size:15px;'>KPSS SORU ÇÖZÜM PLATFORMU</h1>", unsafe_allow_html=True)
 
 
-
 # ===============================
 # Genel Rapor
 # ===============================
@@ -675,7 +668,6 @@ def genel_rapor_page():
     st.markdown("---")
     st.markdown("<h1 style='text-align: center; color: orange; font-size:15px;'>KPSS SORU ÇÖZÜM PLATFORMU</h1>", unsafe_allow_html=True)
 
-
 # ===============================
 # Profil Sayfası
 # ===============================
@@ -723,7 +715,6 @@ def profil_page():
     st.markdown("---")
     st.markdown("<h1 style='text-align:center; color:orange; font-size:15px;'>KPSS SORU ÇÖZÜM PLATFORMU</h1>", unsafe_allow_html=True)
 
-
 # ===============================
 # ADMİN PANELİ
 # ===============================
@@ -737,7 +728,6 @@ def admin_page():
     
     st.title("👨‍🏫 Admin Paneli")
     
-
     
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "👥 Kullanıcılar",
@@ -972,10 +962,6 @@ def admin_page():
             soru_sayisi = sum(len(s) for s in konular.values())
             st.write(f"- **{ders}** → {soru_sayisi} soru")
 
-
-
-
-
 # ===============================
 # SESSION İLK KURULUM
 # ===============================
@@ -1037,6 +1023,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
