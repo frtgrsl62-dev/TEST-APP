@@ -725,19 +725,6 @@ def profil_page():
 
 
 # ===============================
-# ADMIN PANEL
-# ===============================
-
-def admin_page():
-    # 🔙 Geri    
-    if st.button("🏠 Ana Menüye Dön"):
-        st.session_state["page"] = "ders"
-        st.rerun()
-
-    
-    st.title("👨‍🏫 Admin Paneli")
-
-# ===============================
 # ADMİN PANELİ
 # ===============================
 def admin_page():
@@ -1071,6 +1058,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
