@@ -855,13 +855,18 @@ def admin_page():
                     "dogru_cevap": dogru,
                     "cozum": cozum
                 }
-                
-                # Resim varsa kaydet
+
+                # Resim yükleme
+                st.markdown("**📸 Soru Resmi (Opsiyonel)**")
+                uploaded_file = st.file_uploader(
+                    "Resim seç",
+                    type=["jpg", "jpeg", "png", "gif"],
+                    key="soru_resim_upload"
+                )
+                # --- EKLEME: Resim Önizleme ---
                 if uploaded_file:
-                    soru_id = str(uuid.uuid4())[:8]
-                    resim_path = image_handler.upload_image(uploaded_file, soru_id)
-                    if resim_path:
-                        yeni_soru["soru_resmi"] = resim_path
+                    st.image(uploaded_file, caption="Yüklenecek Resim Önizlemesi", width=250)
+
                 
                 soru_bankasi.setdefault(ders, {})
                 soru_bankasi[ders].setdefault(konu, [])
@@ -1081,6 +1086,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
