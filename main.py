@@ -827,6 +827,10 @@ def admin_page():
                 type=["jpg", "jpeg", "png", "gif"],
                 key="soru_resim_upload"
             )
+            
+            # ✅ ÖNIZLEME
+            if uploaded_file:
+                st.image(uploaded_file, caption="📷 Önizleme", width=300)
         
         st.markdown("---")
         
@@ -843,6 +847,20 @@ def admin_page():
         
         dogru = st.selectbox("Doğru Cevap", ["A", "B", "C", "D", "E"], key="add_dogru")
         cozum = st.text_area("Çözüm", height=100, key="add_cozum")
+        
+        # ✅ TAM ÖNİZLEME
+        if soru_metni:
+            with st.expander("👁️ Soru Önizleme"):
+                if uploaded_file:
+                    st.image(uploaded_file, width=400)
+                st.markdown(f"**Soru:** {soru_metni}")
+                if a: st.markdown(f"A) {a}")
+                if b: st.markdown(f"B) {b}")
+                if c: st.markdown(f"C) {c}")
+                if d: st.markdown(f"D) {d}")
+                if e: st.markdown(f"E) {e}")
+                st.markdown(f"**✅ Doğru Cevap:** {dogru}")
+                st.markdown(f"**💡 Çözüm:** {cozum}")
         
         if st.button("➕ Soruyu Kaydet", use_container_width=True):
             if not all([ders, konu, soru_metni, a, b, c, d, e, cozum]):
@@ -907,17 +925,29 @@ def admin_page():
 
             st.markdown("---")
 
-            # 🖼️ Mevcut resim
-            if s.get("soru_resmi") or s.get("resim"):
-                current_img = s.get("soru_resmi") or s.get("resim")
-                image_handler.display_image(current_img, caption="Mevcut Soru Resmi", width=300)
-
-
-            yeni_resim = st.file_uploader(
-                "🖼️ Yeni Resim Yükle (Boş bırakılırsa eski resim korunur)",
-                type=["png", "jpg", "jpeg"],
-                key="edit_resim"
-            )
+            # 🖼️ MEVCUT VE YENİ RESİM
+            col1, col2 = st.columns([1, 1])
+            
+            with col1:
+                st.markdown("**📷 Mevcut Resim**")
+                if s.get("soru_resmi") or s.get("resim"):
+                    current_img = s.get("soru_resmi") or s.get("resim")
+                    image_handler.display_image(current_img, caption="Mevcut", width=300)
+                else:
+                    st.info("Resim yok")
+            
+            with col2:
+                st.markdown("**🆕 Yeni Resim**")
+                yeni_resim = st.file_uploader(
+                    "Yeni resim seç",
+                    type=["png", "jpg", "jpeg", "gif"],
+                    key="edit_resim"
+                )
+                
+                # ✅ YENİ RESİM ÖNİZLEME
+                if yeni_resim:
+                    st.image(yeni_resim, caption="📷 Yeni Önizleme", width=300)
+                    st.success("✅ Yüklenecek")
 
             soru = st.text_area("Soru Metni", s["soru"])
             a = st.text_input("A", s["secenekler"]["A"])
@@ -1084,11 +1114,3 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
-
-
-
-
-
-
-
-
