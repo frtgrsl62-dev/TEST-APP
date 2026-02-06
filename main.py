@@ -906,8 +906,9 @@ def admin_page():
             st.markdown("---")
 
             # 🖼️ Mevcut resim
-            if s.get("soru_resmi"):
-                st.image(s["soru_resmi"], caption="Mevcut Soru Resmi", width=300)
+            if s.get("soru_resmi") or s.get("resim"):
+                current_img = s.get("soru_resmi") or s.get("resim")
+                image_handler.display_image(current_img, caption="Mevcut Soru Resmi", width=300)
 
             yeni_resim = st.file_uploader(
                 "🖼️ Yeni Resim Yükle (Boş bırakılırsa eski resim korunur)",
@@ -1080,6 +1081,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
