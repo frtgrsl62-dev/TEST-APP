@@ -738,7 +738,9 @@ def admin_page():
         "📊 İstatistikler"
     ])
     
-    # TAB 1 - Kullanıcı Yönetimi
+    # ==================================================
+    # 👥 KULLANICI YÖNETİMİ
+    # ==================================================
     with tab1:
         st.subheader("👥 Kullanıcı Yönetimi")
         
@@ -773,7 +775,9 @@ def admin_page():
                             st.session_state[f"confirm_{k_adi}"] = True
                             st.warning("Tekrar tıklayın")
     
-    # TAB 2 - Soru Ekle
+    # ==================================================
+    # ➕ SORU EKLE
+    # ==================================================
     with tab2:
         st.subheader("➕ Yeni Soru Ekle")
         
@@ -850,7 +854,12 @@ def admin_page():
 with tab3:
     st.subheader("✏️ Soru Düzenle")
 
-    ders = st.selectbox("Ders", list(soru_bankasi.keys()), key="edit_ders")
+    ders = st.selectbox(
+        "Ders",
+        list(soru_bankasi.keys()),
+        key="edit_ders"
+    )
+
     konu = st.selectbox(
         "Konu",
         list(soru_bankasi[ders].keys()),
@@ -871,7 +880,6 @@ with tab3:
         s = sorular[idx]
 
         st.markdown("---")
-        st.markdown("### 📄 Soru Bilgileri")
 
         # 🖼️ Mevcut resim
         if s.get("soru_resmi"):
@@ -920,8 +928,11 @@ with tab3:
             soru_bankasini_kaydet(soru_bankasi)
             st.info("✏️ Soru güncellendi")
             st.rerun()
+
     
-    # TAB 4 - Soru Sil
+    # ==================================================
+    # 🗑️ SORU SİL
+    # ==================================================
     with tab4:
         st.subheader("🗑️ Soru Sil")
         
@@ -953,8 +964,11 @@ with tab3:
                 st.success("🗑️ Soru silindi!")
                 time.sleep(1)
                 st.rerun()
+
+
     
-    # TAB 5 - İstatistikler
+    # 📊 İstatistikler
+    
     with tab5:
         st.subheader("📊 Soru Bankası İstatistikleri")
 
@@ -1042,6 +1056,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
