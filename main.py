@@ -100,7 +100,7 @@ kullanicilar = kullanicilari_yukle()
 # Login Sayfası
 # ===============================
 def login_page():
-    st.markdown("<h1 style='text-align: center; color: orange;'>KPSS SORU ÇÖZÜM PLATFORMU</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: orange;'>SORU ÇÖZÜM PLATFORMU</h1>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("<h1>Giriş Ekranı</h1>", unsafe_allow_html=True)
 
@@ -972,6 +972,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
