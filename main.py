@@ -8,6 +8,7 @@ from streamlit_cookies_manager import EncryptedCookieManager
 from soru_bankasi import soru_bankasini_yukle, soru_bankasini_kaydet
 from ders_konu_notlari import ders_konu_notlari
 from deneme_sinavlari import deneme_sinavlari
+from image_handler import image_handler
 
 
 import uuid
@@ -1023,6 +1024,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
