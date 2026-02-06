@@ -844,64 +844,82 @@ def admin_page():
                 time.sleep(1)
                 st.rerun()
     
-    # TAB 3 - Soru Düzenle
-    with tab3:
-        st.subheader("✏️ Soru Düzenle")
-        
-        ders = st.selectbox("Ders", list(soru_bankasi.keys()), key="edit_ders")
-        konu = st.selectbox("Konu", list(soru_bankasi[ders].keys()), key="edit_konu")
-        
-        sorular = soru_bankasi[ders][konu]
-        
-        if not sorular:
-            st.info("Bu konuda soru yok")
-        else:
-            idx = st.selectbox(
-                "Düzenlenecek Soru",
-                range(len(sorular)),
-                format_func=lambda i: f"{i+1}. {sorular[i]['soru'][:60]}...",
-                key="edit_idx"
-            )
-            
-            s = sorular[idx]
-            
-            soru_metni = st.text_area("Soru", s["soru"], key="edit_soru_text")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                a = st.text_input("A)", s["secenekler"]["A"], key="edit_a")
-                b = st.text_input("B)", s["secenekler"]["B"], key="edit_b")
-                c = st.text_input("C)", s["secenekler"]["C"], key="edit_c")
-            with col2:
-                d = st.text_input("D)", s["secenekler"]["D"], key="edit_d")
-                e = st.text_input("E)", s["secenekler"]["E"], key="edit_e")
-            
-            dogru = st.selectbox(
-                "Doğru",
-                ["A", "B", "C", "D", "E"],
-                index=["A","B","C","D","E"].index(s["dogru_cevap"]),
-                key="edit_dogru"
-            )
-            cozum = st.text_area("Çözüm", s["cozum"], key="edit_cozum")
-            
-            if st.button("💾 Güncelle", use_container_width=True):
-                sorular[idx] = {
-                    "soru": soru_metni,
-                    "secenekler": {
-                        "A": a, "B": b, "C": c, "D": d, "E": e
-                    },
-                    "dogru_cevap": dogru,
-                    "cozum": cozum
-                }
-                
-                # Mevcut resimleri koru
-                if "soru_resmi" in s:
-                    sorular[idx]["soru_resmi"] = s["soru_resmi"]
-                if "cozum_resmi" in s:
-                    sorular[idx]["cozum_resmi"] = s["cozum_resmi"]
-                
-                soru_bankasini_kaydet(soru_bankasi)
-                st.success("✅ Soru güncellendi!")
+# ==================================================
+# ✏️ SORU DÜZENLE
+# ==================================================
+with tab3:
+    st.subheader("✏️ Soru Düzenle")
+
+    ders = st.selectbox("Ders", list(soru_bankasi.keys()), key="edit_ders")
+    konu = st.selectbox(
+        "Konu",
+        list(soru_bankasi[ders].keys()),
+        key="edit_konu"
+    )
+
+    sorular = soru_bankasi[ders][konu]
+
+    if not sorular:
+        st.info("Bu konuda soru yok")
+    else:
+        idx = st.selectbox(
+            "Düzenlenecek Soru",
+            range(len(sorular)),
+            format_func=lambda i: f"{i+1}. {sorular[i]['soru'][:60]}..."
+        )
+
+        s = sorular[idx]
+
+        st.markdown("---")
+        st.markdown("### 📄 Soru Bilgileri")
+
+        # 🖼️ Mevcut resim
+        if s.get("soru_resmi"):
+            st.image(s["soru_resmi"], caption="Mevcut Soru Resmi", width=300)
+
+        yeni_resim = st.file_uploader(
+            "🖼️ Yeni Resim Yükle (Boş bırakılırsa eski resim korunur)",
+            type=["png", "jpg", "jpeg"],
+            key="edit_resim"
+        )
+
+        soru = st.text_area("Soru Metni", s["soru"])
+        a = st.text_input("A", s["secenekler"]["A"])
+        b = st.text_input("B", s["secenekler"]["B"])
+        c = st.text_input("C", s["secenekler"]["C"])
+        d = st.text_input("D", s["secenekler"]["D"])
+        e = st.text_input("E", s["secenekler"]["E"])
+
+        dogru = st.selectbox(
+            "Doğru Cevap",
+            ["A", "B", "C", "D", "E"],
+            index=["A", "B", "C", "D", "E"].index(s["dogru_cevap"])
+        )
+
+        cozum = st.text_area("Çözüm", s["cozum"])
+
+        if st.button("💾 Güncelle"):
+            # 🖼️ Resim işlemi
+            if yeni_resim:
+                soru_id = s.get("id", str(uuid.uuid4()))
+                resim_path = image_handler.upload_image(yeni_resim, soru_id)
+            else:
+                resim_path = s.get("soru_resmi")
+
+            sorular[idx] = {
+                "id": s.get("id", str(uuid.uuid4())),
+                "soru": soru,
+                "secenekler": {
+                    "A": a, "B": b, "C": c, "D": d, "E": e
+                },
+                "dogru_cevap": dogru,
+                "cozum": cozum,
+                "soru_resmi": resim_path
+            }
+
+            soru_bankasini_kaydet(soru_bankasi)
+            st.info("✏️ Soru güncellendi")
+            st.rerun()
     
     # TAB 4 - Soru Sil
     with tab4:
@@ -1024,6 +1042,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
