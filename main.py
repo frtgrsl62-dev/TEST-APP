@@ -728,8 +728,7 @@ def profil_page():
 # ADMİN PANELİ
 # ===============================
 def admin_page():
-    """Admin paneli - Soru yönetimi"""
-    theme = theme_manager.get_theme(st.session_state.get("theme", "light"))
+
 
     # 🔙 Geri    
     if st.button("🏠 Ana Menüye Dön"):
@@ -946,54 +945,33 @@ def admin_page():
                 time.sleep(1)
                 st.rerun()
     
-    # TAB 5 - İstatistikler
-    with tab5:
-        st.subheader("📊 Soru Bankası İstatistikleri")
-        
-        # Toplam soru sayısı
-        toplam_soru = sum(
-            len(konular)
-            for ders_konular in soru_bankasi.values()
-            for konular in ders_konular.values()
-        )
-        
-        toplam_ders = len(soru_bankasi)
-        toplam_konu = sum(len(konular) for konular in soru_bankasi.values())
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown(render_stat_card("Toplam Ders", toplam_ders, "📚", theme['primary']), unsafe_allow_html=True)
-        with col2:
-            st.markdown(render_stat_card("Toplam Konu", toplam_konu, "📖", theme['info']), unsafe_allow_html=True)
-        with col3:
-            st.markdown(render_stat_card("Toplam Soru", toplam_soru, "📝", theme['success']), unsafe_allow_html=True)
-        
-        # Ders bazında soru dağılımı
-        st.markdown("### Ders Bazında Soru Dağılımı")
-        
-        ders_soru_counts = []
-        for ders, konular in soru_bankasi.items():
-            toplam = sum(len(sorular) for sorular in konular.values())
-            ders_soru_counts.append({
-                "Ders": ders,
-                "Soru Sayısı": toplam,
-                "Konu Sayısı": len(konular)
-            })
-        
-        if ders_soru_counts:
-            df = pd.DataFrame(ders_soru_counts)
-            
-            fig = px.bar(
-                df,
-                x="Ders",
-                y="Soru Sayısı",
-                color="Soru Sayısı",
-                color_continuous_scale="Viridis"
-            )
-            fig.update_layout(height=400)
-            st.plotly_chart(fig, use_container_width=True)
-            
-            st.dataframe(df, use_container_width=True, hide_index=True)
+# TAB 5 - İstatistikler
+with tab5:
+    st.subheader("📊 Soru Bankası İstatistikleri")
+
+    toplam_soru = sum(
+        len(sorular)
+        for ders_konular in soru_bankasi.values()
+        for sorular in ders_konular.values()
+    )
+
+    toplam_ders = len(soru_bankasi)
+    toplam_konu = sum(len(konular) for konular in soru_bankasi.values())
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.info(f"📚 **Toplam Ders:** {toplam_ders}")
+    with col2:
+        st.warning(f"📖 **Toplam Konu:** {toplam_konu}")
+    with col3:
+        st.success(f"📝 **Toplam Soru:** {toplam_soru}")
+
+    st.markdown("### Ders Bazında Soru Sayıları")
+
+    for ders, konular in soru_bankasi.items():
+        soru_sayisi = sum(len(s) for s in konular.values())
+        st.write(f"- **{ders}** → {soru_sayisi} soru")
+
 
 
 
@@ -1058,6 +1036,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
