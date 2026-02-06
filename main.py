@@ -534,16 +534,14 @@ def soru_goster_page():
     # 'soru_resmi' (yeni) veya 'resim' (eski) anahtarlarını kontrol eder
     resim_yolu = soru.get("soru_resmi") or soru.get("resim")
     
-    import os
-    if soru.get("resim"):
-        if os.path.exists(soru["resim"]):
-            st.image(
-                soru["resim"],
-                use_container_width=True,
-                caption="🖼️ Soruya Ait Görsel"
-            )
-        else:
-            st.warning(f"⚠️ Görsel bulunamadı: {soru['resim']}")
+    if resim_yolu:
+        # image_handler içindeki display_image fonksiyonu Base64 ve URL desteği sağlar
+        from image_handler import image_handler
+        image_handler.display_image(
+            resim_yolu, 
+            caption="🖼️ Soru Görseli", 
+            width=None # Sayfa genişliğine yayar
+        )
 
     # ===== Soru metni =====
     st.markdown(soru["soru"])
@@ -1085,6 +1083,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
