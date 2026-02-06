@@ -125,39 +125,35 @@ class ImageHandler:
     # RESİM GÖRÜNTÜLEME
     # ===============================
     
-def display_image(self, image_path: str, caption: str = "", width: int = None):
-    """
-    Resmi Streamlit'te göster
-    """
-    if not image_path:
-        return
-
-    try:
-        # Google Drive linki mi?
-        if "drive.google.com" in image_path:
-            image_path = self._convert_gdrive_url(image_path)
-
-        # width varsa kullan, yoksa container genişliği
-        image_kwargs = {"caption": caption}
-        if width:
-            image_kwargs["width"] = width
-        else:
-            image_kwargs["use_container_width"] = True
-
-        # URL mi?
-        if image_path.startswith("http"):
-            st.image(image_path, **image_kwargs)
-
-        # Yerel dosya mı?
-        elif os.path.exists(image_path):
-            st.image(image_path, **image_kwargs)
-
-        else:
-            st.warning(f"⚠️ Resim bulunamadı: {image_path}")
-
-    except Exception as e:
-        st.error(f"❌ Resim gösterilemedi: {e}")
-
+    def display_image(self, image_path: str, caption: str = "", width: int = None):
+        """
+        Resmi Streamlit'te göster
+        Args:
+            image_path: Dosya yolu, URL veya Google Drive linki
+            caption: Resim başlığı
+            width: Genişlik (px)
+        """
+        if not image_path:
+            return
+        
+        try:
+            # Google Drive linki mi?
+            if "drive.google.com" in image_path:
+                image_path = self._convert_gdrive_url(image_path)
+            
+            # URL mi?
+            if image_path.startswith("http"):
+                st.image(image_path, caption=caption, width=width)
+            
+            # Yerel dosya mı?
+            elif os.path.exists(image_path):
+                st.image(image_path, caption=caption, width=width)
+            
+            else:
+                st.warning(f"⚠️ Resim bulunamadı: {image_path}")
+                
+        except Exception as e:
+            st.error(f"❌ Resim gösterilemedi: {e}")
     
     def _convert_gdrive_url(self, url: str) -> str:
         """
@@ -300,3 +296,4 @@ def get_question_images(soru: Dict) -> Dict[str, str]:
         images["cozum"] = soru["cozum_resmi"]
     
     return images
+
