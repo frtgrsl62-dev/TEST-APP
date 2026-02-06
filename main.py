@@ -522,6 +522,18 @@ def soru_goster_page():
     soru = secilen_test[index]
     st.markdown(f"<h2 style='font-size:20px;'>{secilen_ders} - {secilen_konu}</h2>", unsafe_allow_html=True)
     st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")   
+
+    # ===== Soruya ait resim varsa göster =====
+    if soru.get("resim"):
+        try:
+            st.image(
+                soru["resim"],
+                use_container_width=True,
+                caption="🖼️ Soruya Ait Görsel"
+            )
+        except Exception:
+            st.warning("⚠️ Soru görseli yüklenemedi.")
+
     st.markdown(f"{soru['soru']}")
 
     # Eğer maddeler varsa liste halinde göster
@@ -1056,6 +1068,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
