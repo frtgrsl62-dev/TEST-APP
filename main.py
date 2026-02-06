@@ -530,7 +530,10 @@ def soru_goster_page():
     )
     st.markdown(f"**Soru {index+1}/{len(secilen_test)}:**")
 
-    # ===== Soruya ait resim varsa göster =====
+    # 🖼️ 1. ADIM: Soru Resmini Göster
+    # 'soru_resmi' (yeni) veya 'resim' (eski) anahtarlarını kontrol eder
+    resim_yolu = soru.get("soru_resmi") or soru.get("resim")
+    
     import os
     if soru.get("resim"):
         if os.path.exists(soru["resim"]):
@@ -910,6 +913,7 @@ def admin_page():
                 current_img = s.get("soru_resmi") or s.get("resim")
                 image_handler.display_image(current_img, caption="Mevcut Soru Resmi", width=300)
 
+
             yeni_resim = st.file_uploader(
                 "🖼️ Yeni Resim Yükle (Boş bırakılırsa eski resim korunur)",
                 type=["png", "jpg", "jpeg"],
@@ -1081,6 +1085,7 @@ elif page == "profil":
     profil_page()
 elif page == "admin":
     admin_page()
+
 
 
 
