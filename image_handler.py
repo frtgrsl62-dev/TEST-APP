@@ -131,7 +131,7 @@ class ImageHandler:
         Args:
             image_path: Dosya yolu, URL veya Google Drive linki
             caption: Resim başlığı
-            width: Genişlik (px)
+            width: Genişlik (px) - None ise otomatik
         """
         if not image_path:
             return
@@ -141,13 +141,18 @@ class ImageHandler:
             if "drive.google.com" in image_path:
                 image_path = self._convert_gdrive_url(image_path)
             
+            # width parametresini düzenle
+            kwargs = {"caption": caption}
+            if width is not None:
+                kwargs["width"] = width
+            
             # URL mi?
             if image_path.startswith("http"):
-                st.image(image_path, caption=caption, width=width)
+                st.image(image_path, **kwargs)
             
             # Yerel dosya mı?
             elif os.path.exists(image_path):
-                st.image(image_path, caption=caption, width=width)
+                st.image(image_path, **kwargs)
             
             else:
                 st.warning(f"⚠️ Resim bulunamadı: {image_path}")
